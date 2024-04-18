@@ -131,8 +131,8 @@ return {
 
 			-- Telescope
 			local search = require("telescope.builtin")
-			vim.keymap.set("n", "<leader>sf", search.git_files)
-			vim.keymap.set("n", "<leader>sa", search.find_files)
+			vim.keymap.set("n", "<leader>sg", search.git_files)
+			vim.keymap.set("n", "<leader>sf", search.find_files)
 			vim.keymap.set("n", "<leader>sd", search.diagnostics)
 			vim.keymap.set("n", "<leader>st", ":TodoTelescope<CR>")
 			vim.keymap.set("n", "gd", search.lsp_definitions, { desc = "LSP: [g]oto [d]efinition" })

@@ -4,3 +4,6 @@ require 'user.keys'
 -- require 'user.lsp'
 -- require 'user.luasnip'
 -- require 'user.alpha'
+
+vim.cmd([[colorscheme kanagawa-dragon]])
+vim.cmd([[highlight Normal guibg=none]])

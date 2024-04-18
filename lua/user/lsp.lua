@@ -11,6 +11,7 @@ return {
 				"clangd",
 				"nil_ls",
 				"taplo",
+				"ols",
 				"tailwindcss",
 			},
 		},
@@ -68,6 +69,7 @@ return {
 
 			local servers = {
 				clangd = {},
+				ols = {},
 				astro = {},
 				rust_analyzer = {},
 				lua_ls = {
@@ -98,7 +100,7 @@ return {
 	{ "vxpm/ferris.nvim", opts = {} },
 	{
 		"stevearc/conform.nvim",
-		-- event = { 'BufReadPre', 'BufNewFile' },
+		event = { 'BufReadPre', 'BufNewFile' },
 		opts = {
 			notify_on_error = true,
 			format_on_save = {

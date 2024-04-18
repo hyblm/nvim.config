@@ -9,6 +9,7 @@ return {
 			ensure_installed = {
 				"vimdoc",
 				"rust",
+				"odin",
 				"c",
 				"lua",
 				"asm",
