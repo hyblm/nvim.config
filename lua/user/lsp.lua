@@ -4,15 +4,15 @@ return {
 		"williamboman/mason-lspconfig.nvim",
 		opts = {
 			ensure_installed = {
-				"lua_ls",
-				"rust_analyzer",
+				-- "lua_ls",
+				-- "rust_analyzer",
 				"astro",
-				"tsserver",
-				"clangd",
-				"nil_ls",
-				"taplo",
-				"ols",
-				"tailwindcss",
+				-- "tsserver",
+				-- "clangd",
+				-- "nil_ls",
+				-- "taplo",
+				-- "ols",
+				-- "tailwindcss",
 			},
 		},
 	},
@@ -22,6 +22,10 @@ return {
 			vim.api.nvim_create_autocmd("LspAttach", {
 				group = vim.api.nvim_create_augroup("lsp-attach", { clear = true }),
 				callback = function(event)
+					local client = vim.lsp.get_client_by_id(event.data.client_id)
+					if client.server_capabilities.inlayHintProvider then
+						vim.lsp.inlay_hint.enable(event.buf, true)
+					end
 					local map = function(keys, func, description)
 						vim.keymap.set("n", keys, func, { buffer = event.buf, desc = "LSP: " .. description })
 					end
@@ -72,6 +76,7 @@ return {
 				ols = {},
 				astro = {},
 				rust_analyzer = {},
+				tsserver = {},
 				lua_ls = {
 					settings = {
 						Lua = {
@@ -99,22 +104,54 @@ return {
 	"onsails/lspkind.nvim",
 	{ "vxpm/ferris.nvim", opts = {} },
 	{
+		"mfussenegger/nvim-lint",
+		event = { "BufReadPre", "BufNewFile" },
+		config = function()
+			local lint = require("lint")
+			lint.linters_by_ft = {
+				typescript = { "eslint_d" },
+				javascript = { "eslint_d" },
+				typescriptreact = { "eslint_d" },
+				javascriptreact = { "eslint_d" },
+			}
+
+			local lint_augroup = vim.api.nvim_create_augroup("lint", { clear = true })
+			vim.api.nvim_create_autocmd({ "BufEnter", "BufWritePost", "InsertLeave" }, {
+				group = lint_augroup,
+				callback = function()
+					lint.try_lint()
+				end,
+			})
+		end,
+	},
+	{
 		"stevearc/conform.nvim",
-		event = { 'BufReadPre', 'BufNewFile' },
+		event = { "BufReadPre", "BufNewFile" },
 		opts = {
 			notify_on_error = true,
 			format_on_save = {
-				timeout_ms = 500,
-				lsp_fallback = false,
+				timeout_ms = 1500,
+				lsp_fallback = true,
 			},
 			formatters_by_ft = {
 				lua = { "stylua" },
+				typescript = { "prettier" },
+				javascript = { "prettier" },
+				typescriptreact = { "prettier" },
+				javascriptreact = { "prettier" },
+				css = { "prettier" },
+				html = { "prettier" },
+				json = { "prettier" },
+				yaml = { "prettier" },
+				markdown = { "prettier" },
 				rust = { "rustfmt" },
 				c = { "clang_format" },
 			},
 			formatters = {
 				clang_format = {
-					prepend_args = { "--style=microsoft" },
+					prepend_args = {
+						"--style={BasedOnStyle: Chromium, AllowShortIfStatementsOnASingleLine: AllIfsAndElse, AllowShortBlocksOnASingleLine: Always}",
+					},
 				},
 			},
 		},

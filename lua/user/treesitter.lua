@@ -5,6 +5,10 @@ return {
 	{
 		"nvim-treesitter/nvim-treesitter",
 		build = ":TSUpdate",
+        event = { "BufReadPre", "BufNewFile" },
+        dependencies = {
+            "windwp/nvim-ts-autotag",
+        },
 		opts = {
 			ensure_installed = {
 				"vimdoc",
@@ -16,6 +20,8 @@ return {
 				"python",
 				"javascript",
 				"typescript",
+                "css",
+                "html",
 				"astro",
 			},
 			auto_install = true,
@@ -24,6 +30,7 @@ return {
 				additional_vim_regex_highlighting = false,
 			},
 			indent = { enable = true },
+			autotag = { enable = true },
 			incremental_selection = {
 				enable = true,
 				keymaps = {

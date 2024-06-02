@@ -25,11 +25,11 @@ return {
 					["<C-d>"] = cmp.mapping.scroll_docs(-4),
 					["<C-f>"] = cmp.mapping.scroll_docs(4),
 					["<C-Space>"] = cmp.mapping(cmp.mapping.complete(), { "i", "c" }),
-					["<C-y>"] = cmp.mapping.confirm({
+					["<C-.>"] = cmp.mapping.confirm({
 						behavior = cmp.ConfirmBehavior.Insert,
 						select = true,
 					}),
-					["<C-e>"] = cmp.mapping({
+					["<C-q>"] = cmp.mapping({
 						i = cmp.mapping.abort(),
 						c = cmp.mapping.close(),
 					}),
@@ -89,6 +89,18 @@ return {
 					{ name = "cmdline" },
 				}),
 			})
+
+			local ls = require("luasnip")
+			vim.keymap.set({ "i", "s" }, "<C-h>", function()
+				if ls.expand_or_jumpable() then
+					ls.expand_or_jump()
+				end
+			end, { silent = true })
+			vim.keymap.set({ "i", "s" }, "<C-e>", function()
+				if ls.jumpable(-1) then
+					ls.jump(-1)
+				end
+			end, { silent = true })
 		end,
 	},
 }

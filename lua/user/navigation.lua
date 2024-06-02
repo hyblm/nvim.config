@@ -68,19 +68,19 @@ return {
 			vim.keymap.set("n", "<leader>h", function()
 				harpoon:list():append()
 			end)
-			vim.keymap.set("n", "<C-e>", function()
+			vim.keymap.set("n", "<C-h>", function()
 				harpoon.ui:toggle_quick_menu(harpoon:list())
 			end)
-			vim.keymap.set("n", "<C-f>", function()
+			vim.keymap.set("n", "<C-c>", function()
 				harpoon:list():select(1)
 			end)
-			vim.keymap.set("n", "<C-d>", function()
+			vim.keymap.set("n", "<C-t>", function()
 				harpoon:list():select(2)
 			end)
-			vim.keymap.set("n", "<C-s>", function()
+			vim.keymap.set("n", "<C-n>", function()
 				harpoon:list():select(3)
 			end)
-			vim.keymap.set("n", "<C-a>", function()
+			vim.keymap.set("n", "<C-s>", function()
 				harpoon:list():select(4)
 			end)
 
@@ -130,24 +130,24 @@ return {
 			--telescope.load_extension 'fzf'
 
 			-- Telescope
-			local search = require("telescope.builtin")
-			vim.keymap.set("n", "<leader>sg", search.git_files)
-			vim.keymap.set("n", "<leader>sf", search.find_files)
-			vim.keymap.set("n", "<leader>sd", search.diagnostics)
+			local ts = require("telescope.builtin")
+			vim.keymap.set("n", "<leader>sg", ts.git_files)
+			vim.keymap.set("n", "<leader>sp", ts.find_files)
+			vim.keymap.set("n", "<leader>sd", ts.diagnostics)
 			vim.keymap.set("n", "<leader>st", ":TodoTelescope<CR>")
-			vim.keymap.set("n", "gd", search.lsp_definitions, { desc = "LSP: [g]oto [d]efinition" })
-			vim.keymap.set("n", "gr", search.lsp_references, { desc = "LSP: [g]oto [r]eferences" })
-			vim.keymap.set("n", "gI", search.lsp_implementations, { desc = "LSP: [g]oto [I]implementation" })
-			vim.keymap.set("n", "<leader>df", search.lsp_type_definitions, { desc = "LSP: type [D]efinition" })
-			vim.keymap.set("n", "<leader>ds", search.lsp_document_symbols, { desc = "LSP: [D]ocument [S]ymbols" })
-			vim.keymap.set("n", "<leader>ws", search.lsp_workspace_symbols, { desc = "LSP: [W]orkspace [S]ymbols" })
+			vim.keymap.set("n", "gd", ts.lsp_definitions, { desc = "LSP: [g]oto [d]efinition" })
+			vim.keymap.set("n", "gr", ts.lsp_references, { desc = "LSP: [g]oto [r]eferences" })
+			vim.keymap.set("n", "gI", ts.lsp_implementations, { desc = "LSP: [g]oto [I]implementation" })
+			vim.keymap.set("n", "<leader>df", ts.lsp_type_definitions, { desc = "LSP: type [D]efinition" })
+			vim.keymap.set("n", "<leader>ds", ts.lsp_document_symbols, { desc = "LSP: [D]ocument [S]ymbols" })
+			vim.keymap.set("n", "<leader>ws", ts.lsp_workspace_symbols, { desc = "LSP: [W]orkspace [S]ymbols" })
 
 			vim.keymap.set("n", " /", function()
-				search.current_buffer_fuzzy_find(require("telescope.themes").get_ivy({}))
+				ts.current_buffer_fuzzy_find(require("telescope.themes").get_ivy({}))
 			end, { desc = "[/] Fuzzy find in current buffer" })
 
 			vim.keymap.set("n", "<leader>g/", function()
-				search.live_grep(require("telescope.themes").get_ivy({}))
+				ts.live_grep(require("telescope.themes").get_ivy({}))
 			end, { desc = "[g/] global fuzzy find" })
 		end,
 	},
@@ -194,8 +194,7 @@ return {
 		"folke/todo-comments.nvim",
 		dependencies = { "nvim-lua/plenary.nvim" },
 		opts = {
-			highlight = { pattern = [[.*<(KEYWORDS)\s*\(.*\):]] },
-			search = { pattern = [[]] },
+			keywords = { WARN = { alt = { "ASSUMPTION" } } },
 		},
 	},
 	"nanotee/zoxide.vim",

@@ -1,11 +1,12 @@
 local options = {
-
 	compatible = false,
 	number = true,
 	relativenumber = true,
 
 	termguicolors = true,
+	-- background = "dark",
 	cursorline = true,
+	cursorcolumn = true,
 	laststatus = 3,
 	signcolumn = "yes",
 	colorcolumn = "100",
@@ -20,10 +21,11 @@ local options = {
 	hidden = true,
 	errorbells = false,
 
-	tabstop = 4,
+	tabstop = 2,
 	softtabstop = 4,
-	shiftwidth = 4,
+	shiftwidth = 2,
 	expandtab = true,
+	autoindent = true,
 
 	smartindent = true,
 	wrap = false,
@@ -39,6 +41,7 @@ local options = {
 
 	ttyfast = true,
 	fileencoding = "utf-8",
+	backspace = "indent,eol,start",
 	-- clipboard = "unnamedplus",
 	-- guifont = "Fira Code:h11",
 }
@@ -64,13 +67,13 @@ end
 
 vim.diagnostic.config({
 	virtual_text = false,
-    update_in_insert = true,
-    float = {
-        focusable= false,
-        style = "minimal",
-        -- border = "rounded",
-        header = "",
-        prefix = "",
-    },
+	update_in_insert = true,
+	float = {
+		focusable = false,
+		style = "minimal",
+		-- border = "rounded",
+		header = "",
+		prefix = "",
+	},
 	signs = { active = signs },
 })
