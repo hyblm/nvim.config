@@ -1,7 +1,70 @@
 return {
+	"SmiteshP/nvim-navic",
+	{
+		"folke/which-key.nvim",
+		event = "VeryLazy",
+		opts = {
+			-- your configuration comes here
+			-- or leave it empty to use the default settings
+			-- refer to the configuration section below
+		},
+		keys = {
+			{
+				"<leader>?",
+				function()
+					require("which-key").show({ global = false })
+				end,
+				desc = "Buffer Local Keymaps (which-key)",
+			},
+		},
+	},
+	{
+		"lewis6991/hover.nvim",
+		enabled = true,
+		config = function()
+			require("hover").setup({
+				init = function()
+					-- Require providers
+					require("hover.providers.lsp")
+					require("hover.providers.gh")
+					require("hover.providers.gh_user")
+					-- require('hover.providers.jira')
+					require("hover.providers.dap")
+					require("hover.providers.fold_preview")
+					-- require('hover.providers.diagnostic')
+					-- require('hover.providers.man')
+					require("hover.providers.dictionary")
+				end,
+				preview_opts = {
+					border = "single",
+				},
+				-- Whether the contents of a currently open hover window should be moved
+				-- to a :h preview-window when pressing the hover keymap.
+				preview_window = false,
+				title = true,
+				mouse_providers = {
+					"LSP",
+				},
+				mouse_delay = 1000,
+			})
+
+			-- Setup keymaps
+			vim.keymap.set("n", "K", require("hover").hover, { desc = "hover.nvim" })
+			vim.keymap.set("n", "gK", require("hover").hover_select, { desc = "hover.nvim (select)" })
+			vim.keymap.set("n", "<C-p>", function()
+				require("hover").hover_switch("previous")
+			end, { desc = "hover.nvim (previous source)" })
+			vim.keymap.set("n", "<C-n>", function()
+				require("hover").hover_switch("next")
+			end, { desc = "hover.nvim (next source)" })
+
+			-- Mouse support
+			vim.keymap.set("n", "<MouseMove>", require("hover").hover_mouse, { desc = "hover.nvim (mouse)" })
+			vim.o.mousemoveevent = true
+		end,
+	},
 	{
 		"lewis6991/gitsigns.nvim",
-
 		opts = {
 			on_attach = function(bufnr)
 				local gitsigns = require("gitsigns")
@@ -94,12 +157,18 @@ return {
 	},
 	{
 		"echasnovski/mini.nvim",
-		version = "*",
 		config = function()
 			require("mini.ai").setup()
+			-- require("mini.clue").setup() -- which key replacement
 			require("mini.surround").setup()
 			require("mini.pairs").setup()
-			require("mini.statusline").setup()
+			-- require("mini.statusline").setup()
+			local hi = require("mini.hipatterns")
+			hi.setup({
+				highlighters = {
+					hex_color = hi.gen_highlighter.hex_color(),
+				},
+			})
 			-- require 'mini.operators'.setup()
 		end,
 	},
@@ -133,6 +202,7 @@ return {
 			local ts = require("telescope.builtin")
 			vim.keymap.set("n", "<leader>sg", ts.git_files)
 			vim.keymap.set("n", "<leader>sp", ts.find_files)
+			vim.keymap.set("n", "<leader>sb", ts.buffers)
 			vim.keymap.set("n", "<leader>sd", ts.diagnostics)
 			vim.keymap.set("n", "<leader>st", ":TodoTelescope<CR>")
 			vim.keymap.set("n", "gd", ts.lsp_definitions, { desc = "LSP: [g]oto [d]efinition" })
@@ -153,42 +223,39 @@ return {
 	},
 	{
 		"folke/trouble.nvim",
-		init = function()
-			local t = require("trouble")
-			vim.keymap.set("n", "<leader>xx", function()
-				t.toggle()
-			end)
-			vim.keymap.set("n", "<leader>xw", function()
-				t.toggle("workspace_diagnostics")
-			end)
-			vim.keymap.set("n", "<leader>xd", function()
-				t.toggle("document_diagnostics")
-			end)
-			vim.keymap.set("n", "<leader>xq", function()
-				t.toggle("quickfix")
-			end)
-			vim.keymap.set("n", "<leader>xl", function()
-				t.toggle("loclist")
-			end)
-			vim.keymap.set("n", "<leader>xt", function()
-				t.toggle("todo")
-			end)
-			vim.keymap.set("n", "gR", function()
-				t.toggle("lsp_references")
-			end)
-			vim.keymap.set("n", "]t", function()
-				t.next({ skip_groups = true, jump = true })
-			end)
-			vim.keymap.set("n", "[t", function()
-				t.previous({ skip_groups = true, jump = true })
-			end)
-			vim.keymap.set("n", "<leader>x[", function()
-				t.first({ skip_groups = true, jump = true })
-			end)
-			vim.keymap.set("n", "<leader>x]", function()
-				t.last({ skip_groups = true, jump = true })
-			end)
-		end,
+		opts = {},
+		keys = {
+			{
+				"<leader>xx",
+				"<cmd>Trouble diagnostics toggle<cr>",
+				desc = "Diagnostics (Trouble)",
+			},
+			{
+				"<leader>xX",
+				"<cmd>Trouble diagnostics toggle filter.buf=0<cr>",
+				desc = "Buffer Diagnostics (Trouble)",
+			},
+			{
+				"<leader>cs",
+				"<cmd>Trouble symbols toggle focus=false<cr>",
+				desc = "Symbols (Trouble)",
+			},
+			{
+				"<leader>cl",
+				"<cmd>Trouble lsp toggle focus=false win.position=right<cr>",
+				desc = "LSP Definitions / references / ... (Trouble)",
+			},
+			{
+				"<leader>xL",
+				"<cmd>Trouble loclist toggle<cr>",
+				desc = "Location List (Trouble)",
+			},
+			{
+				"<leader>xQ",
+				"<cmd>Trouble qflist toggle<cr>",
+				desc = "Quickfix List (Trouble)",
+			},
+		},
 	},
 	{
 		"folke/todo-comments.nvim",

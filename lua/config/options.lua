@@ -23,9 +23,11 @@ local options = {
 
 	tabstop = 2,
 	softtabstop = 4,
-	shiftwidth = 2,
+	numberwidth = 3,
+	shiftwidth = 4,
 	expandtab = true,
 	autoindent = true,
+	foldenable = false,
 
 	smartindent = true,
 	wrap = false,
@@ -35,14 +37,14 @@ local options = {
 	ignorecase = true,
 	smartcase = true,
 
-	swapfile = false,
+	-- swapfile = false, -- breaks vite hmr
 	backup = false,
 	undofile = true,
 
 	ttyfast = true,
 	fileencoding = "utf-8",
 	backspace = "indent,eol,start",
-	-- clipboard = "unnamedplus",
+	clipboard = "unnamedplus",
 	-- guifont = "Fira Code:h11",
 }
 
@@ -52,6 +54,9 @@ end
 
 vim.opt.shortmess:append("c")
 vim.g.mapleader = " "
+
+vim.wo.foldmethod = "expr"
+vim.wo.foldexpr = "v:lua.vim.treesitter.foldexpr()"
 
 vim.cmd([[highlight Normal guibg=none]]) -- use the background of the terminal emulator
 
@@ -71,7 +76,7 @@ vim.diagnostic.config({
 	float = {
 		focusable = false,
 		style = "minimal",
-		-- border = "rounded",
+		border = "rounded",
 		header = "",
 		prefix = "",
 	},
