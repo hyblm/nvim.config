@@ -19,7 +19,12 @@ return {
 	{ "neovim/nvim-lspconfig", config = require("config.lsp").lspconfig },
 	{ "folke/lazydev.nvim", ft = "lua", opts = {} },
 	"onsails/lspkind.nvim",
-	{ "vxpm/ferris.nvim", opts = {} },
+	-- { "vxpm/ferris.nvim", opts = {} },
+	{
+		"mrcjkb/rustaceanvim",
+		version = "^5", -- Recommended
+		lazy = false, -- This plugin is already lazy
+	},
 	{
 		"mfussenegger/nvim-lint",
 		event = { "BufReadPre", "BufNewFile" },

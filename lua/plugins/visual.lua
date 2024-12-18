@@ -43,37 +43,40 @@ return {
 			require("config.heirline")
 		end,
 		dependencies = {
-			{
-				"rebelot/kanagawa.nvim",
-				lazy = false,
-				priority = 1000,
-				config = function()
-					require("kanagawa").setup({
-						transparent = true,
-						colors = {
-							theme = {
-								all = {
-									ui = {
-										bg_gutter = "none",
-									},
-								},
+			"rebelot/terminal.nvim",
+		},
+	},
+	{
+		"rebelot/kanagawa.nvim",
+		lazy = false,
+		priority = 1000,
+		config = function()
+			require("kanagawa").setup({
+				transparent = true,
+				colors = {
+					theme = {
+						all = {
+							ui = {
+								bg_gutter = "none",
 							},
 						},
-						overrides = function(colors)
-							local theme = colors.theme
-							return {
-								CursorLine = { bg = "#000000" },
-								Pmenu = { fg = theme.ui.shade0, bg = theme.ui.bg_p1, blend = vim.o.pumblend }, -- add `blend = vim.o.pumblend` to enable transparency
-								PmenuSel = { fg = "NONE", bg = theme.ui.bg_p2 },
-								PmenuSbar = { bg = theme.ui.bg_m1 },
-								PmenuThumb = { bg = theme.ui.bg_p2 },
-							}
-						end,
-					})
-					vim.cmd.colorscheme("kanagawa-dragon")
+					},
+				},
+				overrides = function(colors)
+					local theme = colors.theme
+					return {
+						CursorLine = { bg = "#000000" },
+						Pmenu = { fg = theme.ui.shade0, bg = theme.ui.bg_p1, blend = vim.o.pumblend }, -- add `blend = vim.o.pumblend` to enable transparency
+						PmenuSel = { fg = "NONE", bg = theme.ui.bg_p2 },
+						PmenuSbar = { bg = theme.ui.bg_m1 },
+						PmenuThumb = { bg = theme.ui.bg_p2 },
+					}
 				end,
-			},
-		},
+			})
+		end,
+		init = function()
+			vim.cmd.colorscheme("kanagawa")
+		end,
 	},
 	{
 		"folke/noice.nvim",

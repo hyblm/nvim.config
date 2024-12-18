@@ -43,7 +43,7 @@ return {
 				preview_window = false,
 				title = true,
 				mouse_providers = {
-					"LSP",
+					-- "LSP",
 				},
 				mouse_delay = 1000,
 			})
@@ -176,53 +176,16 @@ return {
 	"nvim-telescope/telescope-file-browser.nvim",
 	{
 		"nvim-telescope/telescope.nvim",
+		dependencies = {
+			{ "nvim-telescope/telescope-fzf-native.nvim", build = "make" },
+		},
 		config = function()
-			local telescope = require("telescope")
-
-			telescope.setup({
-				defaults = {
-					prompt_prefix = ":: ",
-					mappings = {
-						i = { ["<C-t>"] = require("trouble.sources.telescope").open },
-						n = { ["<C-t>"] = require("trouble.sources.telescope").open },
-					},
-				},
-				extensions = {
-					file_browser = {
-						theme = "ivy",
-						hijack_netrw = true,
-					},
-				},
-			})
-			telescope.load_extension("ui-select")
-			telescope.load_extension("file_browser")
-			--telescope.load_extension 'fzf'
-
-			-- Telescope
-			local ts = require("telescope.builtin")
-			vim.keymap.set("n", "<leader>sg", ts.git_files)
-			vim.keymap.set("n", "<leader>sp", ts.find_files)
-			vim.keymap.set("n", "<leader>sb", ts.buffers)
-			vim.keymap.set("n", "<leader>sd", ts.diagnostics)
-			vim.keymap.set("n", "<leader>st", ":TodoTelescope<CR>")
-			vim.keymap.set("n", "gd", ts.lsp_definitions, { desc = "LSP: [g]oto [d]efinition" })
-			vim.keymap.set("n", "gr", ts.lsp_references, { desc = "LSP: [g]oto [r]eferences" })
-			vim.keymap.set("n", "gI", ts.lsp_implementations, { desc = "LSP: [g]oto [I]implementation" })
-			vim.keymap.set("n", "<leader>df", ts.lsp_type_definitions, { desc = "LSP: type [D]efinition" })
-			vim.keymap.set("n", "<leader>ds", ts.lsp_document_symbols, { desc = "LSP: [D]ocument [S]ymbols" })
-			vim.keymap.set("n", "<leader>ws", ts.lsp_workspace_symbols, { desc = "LSP: [W]orkspace [S]ymbols" })
-
-			vim.keymap.set("n", " /", function()
-				ts.current_buffer_fuzzy_find(require("telescope.themes").get_ivy({}))
-			end, { desc = "[/] Fuzzy find in current buffer" })
-
-			vim.keymap.set("n", "<leader>g/", function()
-				ts.live_grep(require("telescope.themes").get_ivy({}))
-			end, { desc = "[g/] global fuzzy find" })
+			require("config.telescope")
 		end,
 	},
 	{
 		"folke/trouble.nvim",
+		cmd = "Trouble",
 		opts = {},
 		keys = {
 			{
@@ -255,6 +218,24 @@ return {
 				"<cmd>Trouble qflist toggle<cr>",
 				desc = "Quickfix List (Trouble)",
 			},
+			{
+				"<M-o>",
+				function()
+					local t = require("trouble")
+					t.next()
+					t.jump()
+				end,
+				desc = "Next Trouble Item",
+			},
+			{
+				"<M-i>",
+				function()
+					local t = require("trouble")
+					t.prev()
+					t.jump()
+				end,
+				desc = "Quickfix List (Trouble)",
+			},
 		},
 	},
 	{
@@ -264,6 +245,12 @@ return {
 			keywords = { WARN = { alt = { "ASSUMPTION" } } },
 		},
 	},
-	"nanotee/zoxide.vim",
+	{
+		"nanotee/zoxide.vim",
+		dependencies = {},
+		keys = {
+			{ "<leader>z", "<cmd>Z " },
+		},
+	},
 	{ "numToStr/Comment.nvim", opts = {} },
 }

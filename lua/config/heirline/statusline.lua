@@ -471,7 +471,7 @@ local HelpFilename = {
 }
 
 local TerminalName = {
-	-- icon = ' ', -- 
+	icon = " ", -- 
 	{
 		provider = function()
 			local tname, _ = vim.api.nvim_buf_get_name(0):gsub(".*:", "")
@@ -561,7 +561,7 @@ local MacroRec = {
 local Align = { provider = "%=" }
 local Space = { provider = " " }
 
-ViMode = utils.surround({ "", "" }, "bright_bg", { MacroRec, ViMode, Git })
+ViMode = utils.surround({ "", "" }, "bright_bg", { MacroRec, ViMode, Git })
 
 local DefaultStatusline = {
 	ViMode,
